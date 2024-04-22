@@ -1,14 +1,20 @@
-import { useContext, useEffect, useReducer, useState } from "react";
-import { predefinedDeck } from "./predefinedDeck/deck";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import { predefinedDeck } from "./initValues/deck";
 import { useCalculateCards } from "./hooks/useCalculateCards";
 import { useHiLoSystem } from "./hooks/useHiLoSystem";
 import { deckReducer } from "./deckReducer/deckReducer";
 import { drawCards } from "./actions/actions";
 import { useTurnHandler } from "./hooks/useTurnHandler";
-import UsedCards from "./Components/UsedCards";
 import { usePointsAllocator } from "./hooks/usePointsAllocator";
-import BetButtons from "./Components/BetButtons";
+import BetButtons from "./Components/BetButtons/BetButtons";
 import { pointsContext } from "./App";
+import "./Game.css";
+import Cards from "./Components/Cards/Cards";
+import { cardsContextType } from "./types/CardTypes";
+import StatusBar from "./Components/StatusBar/StatusBar";
+import { initPoints } from "./initValues/points";
+
+export const cardsContext = createContext<cardsContextType>(null);
 
 export default function Game() {
   const context = useContext(pointsContext);
@@ -44,7 +50,8 @@ export default function Game() {
   };
 
   const restartGame = () => {
-    context?.setPoints({ money: 1000, wins: 0, games: 0 });
+    context?.setPoints(initPoints);
+    dispatchCurrentDeck({ action: "shuffle" });
     playAgain();
   };
 
@@ -70,30 +77,35 @@ export default function Game() {
   usePointsAllocator(bet, turnStatus, start);
 
   return (
-    <>
+    <div className="game">
       {!houseWins ? (
         <>
           {!start ? (
             <>
               <BetButtons betState={{ bet, setBet }} />
-              <button disabled={bet === 0} onClick={startGame}>
+              <button id="start" disabled={bet === 0} onClick={startGame}>
                 start
               </button>
             </>
           ) : (
-            <>
-              <p>cards in deck: {calculatedSum.remainingCards}</p>
-              <button disabled={stand || !canPlay} onClick={() => drawCards(1, dispatchCurrentDeck, "player")}>
-                hit
-              </button>
-              <button disabled={stand || !canPlay} onClick={() => setStand(true)}>
-                stand
-              </button>
-              <UsedCards currentDeck={currentDeck} calculatedSum={calculatedSum} cardExposed={stand} />
-              <hr />
-              <h1>{turnStatus.status}</h1>
-              {turnStatus.roundEnd && <button onClick={playAgain}>play again</button>}
-            </>
+            <cardsContext.Provider
+              value={{ calculatedSum: calculatedSum, currentDeck: currentDeck, cardExposed: stand }}>
+              <StatusBar status={turnStatus} handlePlayAgain={playAgain} />
+              <div className="game-buttons">
+                <button disabled={stand || !canPlay} onClick={() => drawCards(1, dispatchCurrentDeck, "player")}>
+                  hit
+                </button>
+                <button disabled={stand || !canPlay} onClick={() => setStand(true)}>
+                  stand
+                </button>
+              </div>
+              <div className="cards">
+                <p>player's sum: {calculatedSum.playerCards.visualSum}</p>
+                <Cards owner="player" />
+                <p>dealer's sum: {calculatedSum.dealerCards.visualSum}</p>
+                <Cards owner="dealer" />
+              </div>
+            </cardsContext.Provider>
           )}
         </>
       ) : (
@@ -102,6 +114,6 @@ export default function Game() {
           <button onClick={restartGame}>restart</button>
         </>
       )}
-    </>
+    </div>
   );
 }

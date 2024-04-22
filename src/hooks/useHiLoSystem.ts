@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { usedDecksType } from "../types/DeckTypes";
-import { predefinedDeck } from "../predefinedDeck/deck";
+import { predefinedDeck } from "../initValues/deck";
 import { deckCardType } from "../types/CardTypes";
 
 export function useHiLoSystem(currentDeck: usedDecksType) {

@@ -1,4 +1,4 @@
-import { predefinedDeck } from "../predefinedDeck/deck";
+import { predefinedDeck } from "../initValues/deck";
 import { deckDispatcherType, usedDecksType } from "../types/DeckTypes";
 
 export function deckReducer(deck: usedDecksType, action: deckDispatcherType): usedDecksType {

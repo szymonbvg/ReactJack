@@ -1,0 +1,46 @@
+.bet {
+	display: flex;
+	flex-direction: column;
+	padding: 15px;
+	align-items: center;
+}
+
+#bet-value {
+	font-weight: bold;
+	font-size: 1.7rem;
+	margin: 10px 0px 1.5rem 0px;
+}
+
+.bets {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+
+.btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.btn.false {
+	opacity: 0.35;
+}
+
+.btn p {
+	font-size: min(max(14px, 100vw / 55), 22px);
+	font-weight: bold;
+	color: white;
+	position: absolute;
+	width: auto;
+	height: auto;
+}
+.btn img {
+	width: calc(100vw / 12);
+	max-width: 100px;
+	min-width: 62px;
+	filter: drop-shadow(4px 4px 2px rgb(0 0 0 / 0.3));
+	z-index: -1;
+}

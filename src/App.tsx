@@ -1,34 +1,20 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import Game from "./Game";
 import { pointsContextType, pointsType } from "./types/PointsTypes";
+import "./App.css";
+import PointsBar from "./Components/PointsBar/PointsBar";
+import { initPoints } from "./initValues/points";
 
 export const pointsContext = createContext<pointsContextType>(null);
 
 export default function App() {
   const lsPoints = JSON.parse(localStorage.getItem("points") as string) as pointsType;
-  const [points, setPoints] = useState<pointsType>(lsPoints === null ? { money: 1000, wins: 0, games: 0 } : lsPoints);
-
-  useEffect(() => {
-    localStorage.setItem(
-      "points",
-      JSON.stringify({
-        money: points.money,
-        wins: points.wins,
-        games: points.games,
-      })
-    );
-  }, [points]);
+  const [points, setPoints] = useState<pointsType>(lsPoints === null ? initPoints : lsPoints);
 
   return (
-    <>
-      <p>money: {points.money}$</p>
-      <p>money balance: {points.money - 1000}$</p>
-      <p>wins: {points.wins}</p>
-      <p>games: {points.games}</p>
-      <hr />
-      <pointsContext.Provider value={{ points: points, setPoints: setPoints }}>
-        <Game />
-      </pointsContext.Provider>
-    </>
+    <pointsContext.Provider value={{ points: points, setPoints: setPoints }}>
+      <PointsBar />
+      <Game />
+    </pointsContext.Provider>
   );
 }

@@ -19,19 +19,19 @@ const predefinedCards: deckCardType[] = [
 
 const predefinedDeck: deckType[] = [
   {
-    cardSymbol: "kier",
+    cardSymbol: "heart",
     cards: [...predefinedCards],
   },
   {
-    cardSymbol: "karo",
+    cardSymbol: "diamond",
     cards: [...predefinedCards],
   },
   {
-    cardSymbol: "trefl",
+    cardSymbol: "club",
     cards: [...predefinedCards],
   },
   {
-    cardSymbol: "pik",
+    cardSymbol: "spade",
     cards: [...predefinedCards],
   },
 ];

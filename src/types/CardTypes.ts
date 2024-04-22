@@ -1,3 +1,6 @@
+import { calculationType } from "./CalculationType";
+import { usedDecksType } from "./DeckTypes";
+
 export type cardsSumType = {
   sum: number;
   visualSum: string;
@@ -15,3 +18,9 @@ export type deckCardType = {
   visualValue: string;
   HiLoValue: number;
 };
+
+export type cardsContextType = {
+  currentDeck: usedDecksType;
+  cardExposed: boolean;
+  calculatedSum: calculationType;
+} | null;
