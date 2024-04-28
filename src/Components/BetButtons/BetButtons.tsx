@@ -29,11 +29,11 @@ export default function BetButtons({ betState }: IBetButtons) {
 
   return (
     <div className="bet">
-      <p id="bet-value">BET: {betState.bet}</p>
+      <p id="bet-value">BET: {betState.bet}$</p>
       <div className="bets">
         {possibleBets.map((possibleBet) => {
           return (
-            <div className={`bet-${possibleBet}`}>
+            <div key={`bet${possibleBet}`} className={`bet-${possibleBet}`}>
               <div className={`btn ${hasMoneyForBet(possibleBet)}`} onClick={() => addBet(possibleBet)}>
                 <p>{possibleBet}</p>
                 <img src="/chip.svg" />

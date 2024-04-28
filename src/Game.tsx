@@ -13,6 +13,7 @@ import Cards from "./Components/Cards/Cards";
 import { cardsContextType } from "./types/CardTypes";
 import StatusBar from "./Components/StatusBar/StatusBar";
 import { initPoints } from "./initValues/points";
+import { useDouble } from "./hooks/useDouble";
 
 export const cardsContext = createContext<cardsContextType>(null);
 
@@ -33,6 +34,17 @@ export default function Game() {
 
   const HiLo = useHiLoSystem(currentDeck);
   const calculatedSum = useCalculateCards(currentDeck, stand);
+  const canDouble = useDouble(currentDeck, bet);
+
+  const doubleBet = async () => {
+    context?.setPoints((prev) => {
+      return { ...prev, money: prev.money - bet };
+    });
+    setBet((prev) => prev * 2);
+    setCanPlay(false);
+    await drawCards(1, dispatchCurrentDeck, "player");
+    setStand(true);
+  };
 
   const startGame = async () => {
     setStart(true);
@@ -92,6 +104,11 @@ export default function Game() {
               value={{ calculatedSum: calculatedSum, currentDeck: currentDeck, cardExposed: stand }}>
               <StatusBar status={turnStatus} handlePlayAgain={playAgain} />
               <div className="game-buttons">
+                {canDouble && (
+                  <button disabled={stand || !canPlay} onClick={doubleBet}>
+                    double
+                  </button>
+                )}
                 <button disabled={stand || !canPlay} onClick={() => drawCards(1, dispatchCurrentDeck, "player")}>
                   hit
                 </button>

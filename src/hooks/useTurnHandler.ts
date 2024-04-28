@@ -33,6 +33,11 @@ export function useTurnHandler(
       }
       const chances = calculatedSum.remainingCards !== 0 ? (requiredCards / calculatedSum.remainingCards) * 100 : 0;
 
+      // dealer will not draw third card if sum is greater than 17
+      if (currentDeck.dealerCards.length == 2 && calculatedSum.dealerCards.sum >= 17) {
+        return true;
+      }
+
       // HiLo < 0 because then there would be more chances to draw low value card
       // so there would be less chances to make score greater than 21
       if (valueTo21 > 1 && (chances >= 50 || HiLo < 0 || calculatedSum.dealerCards.sum <= 16)) {

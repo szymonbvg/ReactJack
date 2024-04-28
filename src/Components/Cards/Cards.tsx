@@ -15,7 +15,7 @@ export default function Cards({ owner }: ICards) {
     <div className={`used-cards ${owner}`}>
       {usedCards?.map((i, index) => {
         return (
-          <div className="card">
+          <div key={`${i.cardSymbol}${i.visualValue}`} className="card">
             {owner === "dealer" && index == 1 && !context?.cardExposed ? (
               <p>?</p>
             ) : (
